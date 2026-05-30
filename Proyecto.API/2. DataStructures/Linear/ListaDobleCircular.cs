@@ -1,4 +1,5 @@
 ﻿using Proyecto.API._0._Nodos;
+using Proyecto.API._2._DataStructures.Linear;
 using SistemaCafeteria.Models;
 using System;
 using System.Collections.Generic;
@@ -10,58 +11,47 @@ namespace SistemaCafeteria._2._DataStructures.Linear
 {
     public class ListaDobleCircular
     {
-        private NodoCategoria primero;
-        private NodoCategoria ultimo;
+        private NodoCircular cabeza = null;
+        private int contador = 0;
 
-        public NodoCategoria Actual { get; private set; }
+        public int Cantidad => contador;
 
-        public ListaDobleCircular()
+        public void Insertar(Categoria nuevaCategoria)
         {
-            primero = null;
-            ultimo = null;
-            Actual = null;
-        }
+            NodoCircular nuevo = new NodoCircular(nuevaCategoria);
 
-        public void InsertarNodo(Categoria nuevaCategoria)
-        {
-            NodoCategoria nuevo = new NodoCategoria(nuevaCategoria);
-
-            if (primero == null)
+            if (cabeza == null)
             {
-                primero = nuevo;
-                ultimo = nuevo;
-                primero.Sig = primero;
-                primero.Ant = primero;
-                Actual = primero;
+                cabeza = nuevo;
             }
             else
             {
-                ultimo.Sig = nuevo;
-                nuevo.Ant = ultimo;
-                nuevo.Sig = primero;
-                primero.Ant = nuevo;
-                ultimo = nuevo;
+                NodoCircular cola = cabeza.Anterior;
+
+                cola.Siguiente = nuevo;
+                nuevo.Anterior = cola;
+                nuevo.Siguiente = cabeza;
+                cabeza.Anterior = nuevo;
             }
+            contador++;
         }
 
-        public Categoria Avanzar()
+        public List<Categoria> ObtenerLista()
         {
-            if (Actual != null)
+            List<Categoria> lista = new List<Categoria>();
+            if (cabeza == null) return lista;
+
+            NodoCircular actual = cabeza;
+            do
             {
-                Actual = Actual.Sig;
-                return Actual.Datos;
-            }
-            return null;
+                lista.Add(actual.Dato);
+                actual = actual.Siguiente;
+            } while (actual != cabeza);
+
+            return lista;
         }
 
-        public Categoria Retroceder()
-        {
-            if (Actual != null)
-            {
-                Actual = Actual.Ant;
-                return Actual.Datos;
-            }
-            return null;
-        }
+        public NodoCircular ObtenerCabeza() => cabeza;
     }
 }
+

@@ -1,40 +1,52 @@
-﻿using SistemaCafeteria._2._DataStructures.Linear;
+﻿using Microsoft.AspNetCore.Mvc;
+using Proyecto.API._0._Nodos;
+using Proyecto.API._2._DataStructures.NoLinear;
+using SistemaCafeteria._2._DataStructures.Linear;
+using SistemaCafeteria._2._DataStructures.NoLinear;
 using SistemaCafeteria.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace SistemaCafeteria._3._Controllers
+namespace Proyecto.API._3._Controllers
 {
-    public class MenuController
+    public class MenuController : Controller
     {
-        // El controlador tiene la instancia de la estructura en memoria
-        private ListaDobleCircular _listaCategorias;
-        private NodoCategoria _categoriaActual;
+        private readonly ListaDobleCircular _categoriasList;
+        private readonly ArbolMenu _arbolMenu;
 
         public MenuController()
         {
-            _listaCategorias = new ListaDobleCircular();
-            _categoriaActual = null;
+            _categoriasList = new ListaDobleCircular();
+            _arbolMenu = new ArbolMenu();
+
+            // Datos de prueba iniciales (Seed Data)
+            InicializarDatos();
         }
 
-        // Métodos que los botones del formulario van a activar
-        public void RegistrarNuevaCategoria(string nombre)
+        private void InicializarDatos()
         {
-            Categoria nueva = new Categoria(nombre);
-            _listaCategorias.InsertarNodo(nueva);
+            var cat1 = new Categoria(1, "Cafés", "Bebidas calientes premium");
+            var cat2 = new Categoria(2, "Postres", "Tortas y masas dulces");
+
+            _categoriasList.Insertar(cat1);
+            _categoriasList.Insertar(cat2);
+
+            _arbolMenu.AgregarCategoria(cat1);
+            _arbolMenu.AgregarCategoria(cat2);
         }
 
-        public string AvanzarEnMenu()
+        public List<Categoria> ObtenerCategoriasCarrusel()
         {
-            if (_categoriaActual != null)
-            {
-                _categoriaActual = _categoriaActual.Sig;
-                return _categoriaActual.Datos.Nombre;
-            }
-            return "No hay categorías";
+            return _categoriasList.ObtenerLista();
+        }
+
+        public NodoArbol ObtenerMenuJerarquico()
+        {
+            return _arbolMenu.Raiz;
+        }
+
+        public void RegistrarCategoria(Categoria nuevaCategoria)
+        {
+            _categoriasList.Insertar(nuevaCategoria);
+            _arbolMenu.AgregarCategoria(nuevaCategoria);
         }
     }
 }

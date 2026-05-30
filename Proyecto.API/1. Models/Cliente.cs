@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SistemaCafeteria.Models
 {
-    internal class Cliente
+    public class Cliente
     {
     }
 }

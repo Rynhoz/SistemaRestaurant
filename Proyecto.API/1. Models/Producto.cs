@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SistemaCafeteria.Models
 {
-    internal class Producto
+    public class Producto
     {
     }
 }
