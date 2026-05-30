@@ -17,7 +17,6 @@ namespace Proyecto.API._3._Controllers
             _categoriasList = new ListaDobleCircular();
             _arbolMenu = new ArbolMenu();
 
-            // Datos de prueba iniciales (Seed Data)
             InicializarDatos();
         }
 

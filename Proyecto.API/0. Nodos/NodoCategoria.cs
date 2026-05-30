@@ -4,7 +4,7 @@ namespace Proyecto.API._0._Nodos
 {
     public class NodoCategoria
     {
-        public Categoria Datos { get; set; } // Cambiado de int a Categoria
+        public Categoria Datos { get; set; }
         public NodoCategoria Sig { get; set; }
         public NodoCategoria Ant { get; set; }
 
